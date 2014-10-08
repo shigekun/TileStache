@@ -467,8 +467,14 @@ class Layer:
             Note that metatiling and pass-through mode of a Provider
             are mutually exclusive options
         """
-        if self.bounds and self.bounds.excludes(coord):
+        try:
+            from . import Vector
+        except ImportError:
+            pass
+        if self.bounds and self.bounds.excludes(coord) and not isinstance(self.provider, Vector.Provider):
             raise NoTileLeftBehind(Image.new('RGB', (self.dim, self.dim), (0x99, 0x99, 0x99)))
+        else:
+            self.provider.bounds = self.bounds
         
         srs = self.projection.srs
         xmin, ymin, xmax, ymax = self.envelope(coord)
