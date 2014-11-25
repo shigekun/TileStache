@@ -580,11 +580,8 @@ class Provider:
     def renderTile(self, width, height, srs, coord):
         """ Render a single tile, return a VectorResponse instance.
         """
-        if self.bounds and self.bounds.excludes(coord):
-            features = []
-        else:
-            layer, ds = _open_layer(self.driver, self.parameters, self.layer.config.dirpath)
-            features = _get_features(coord, self.properties, self.layer.projection, layer, self.clipped, self.projected, self.spacing, self.id_property)
+        layer, ds = _open_layer(self.driver, self.parameters, self.layer.config.dirpath)
+        features = _get_features(coord, self.properties, self.layer.projection, layer, self.clipped, self.projected, self.spacing, self.id_property)
         response = {'type': 'FeatureCollection', 'features': features}
         
         if self.projected:
