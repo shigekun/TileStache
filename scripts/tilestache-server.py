@@ -25,15 +25,6 @@ tile proxied from http://tile.osm.org/0/0/0.png
 Check tilestache-server.py --help to change these defaults.
 """
 
-
-"""sudo easy_install python-daemon"""
-	
-import socket
-import os
-import sys
-from daemon import daemon
-from daemon.pidfile import PIDLockFile
-
 if __name__ == '__main__':
     from datetime import datetime
     from optparse import OptionParser, OptionValueError
@@ -61,11 +52,6 @@ if __name__ == '__main__':
         print >> sys.stderr, "Config file not found. Use -c to pick a tilestache config file."
         sys.exit(1)
 
-    with daemon.DaemonContext(pidfile=PIDLockFile(
-	  '/var/run/tilestache-server.pid'),
-	  stdout=sys.stdout,
-	  stderr=sys.stderr
-	):
-        app = TileStache.WSGITileServer(config=options.file, autoreload=True)
-        run_simple(options.ip, options.port, app)
+    app = TileStache.WSGITileServer(config=options.file, autoreload=True)
+    run_simple(options.ip, options.port, app)
 
