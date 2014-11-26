@@ -478,8 +478,14 @@ class Layer:
             Note that metatiling and pass-through mode of a Provider
             are mutually exclusive options
         """
+        try:
+            from . import Vector
+        except ImportError:
+            pass
         if self.bounds and self.bounds.excludes(coord):
             raise NoTileLeftBehind(Image.new('RGBA', (self.dim, self.dim), (0, 0, 0, 0)))
+        else:
+            self.provider.bounds = self.bounds
         
         srs = self.projection.srs
         xmin, ymin, xmax, ymax = self.envelope(coord)
