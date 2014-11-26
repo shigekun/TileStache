@@ -482,7 +482,7 @@ class Layer:
             from . import Vector
         except ImportError:
             pass
-        if self.bounds and self.bounds.excludes(coord):
+        if self.bounds and self.bounds.excludes(coord) and not isinstance(self.provider, Vector.Provider):
             raise NoTileLeftBehind(Image.new('RGBA', (self.dim, self.dim), (0, 0, 0, 0)))
         else:
             self.provider.bounds = self.bounds
